@@ -34,14 +34,15 @@ export const experiences = [
 export default function Experiences() {
   return (
     <>
-      {experiences.map(({ title, company, stack, detail, date, link }) => (
+      {experiences.map((experience, index) => (
         <Experience
-          title={company}
-          subtitle={title}
-          stack={stack}
-          detail={detail}
-          date={date}
-          link={link}
+          key={`${experience.title}-${experience.company}-${index}`} // Unique key using title, company, and index
+          title={experience.company}
+          subtitle={experience.title}
+          stack={experience.stack}
+          detail={experience.detail}
+          date={experience.date}
+          link={experience.link}
         />
       ))}
     </>

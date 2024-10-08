@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Input from "./Input";
 import Button from "./Btn";
-import emailjs from 'emailjs-com';
 
 export default function ContactForm() {
   const [firstName, setFirstName] = useState("");
@@ -29,18 +28,34 @@ export default function ContactForm() {
       lastName,
       email,
       subject,
-      body
+      body,
     };
 
-    emailjs.send('service_yepvjbk', 'template_3mxu5al', templateParams, 'ZIdcjgmbQs-5VIHSD')
+    // Use Formspree to send the data
+    fetch("https://formspree.io/f/mnnqadgd", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(templateParams),
+    })
       .then((response) => {
-        console.log('SUCCESS!', response.status, response.text);
-        alert('Your message has been sent!');
+        if (response.ok) {
+          alert("Your message has been sent!");
+          // Reset form fields
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setSubject("");
+          setBody("");
+        } else {
+          alert("There was an error sending your message. Please try again.");
+        }
       })
       .catch((error) => {
-        console.error('FAILED...', error);
-        alert('There was an error sending your message. Please try again.');
-        console.log('Error details:', error);
+        console.error("FAILED...", error);
+        alert("There was an error sending your message. Please try again.");
       });
   };
 
